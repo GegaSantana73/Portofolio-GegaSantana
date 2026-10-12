@@ -1,0 +1,120 @@
+/* ==========================================================================
+   DIGITAL NOIR PORTFOLIO - GEGA SANTANA
+   Responsive Media Queries & Fluid Breakpoints
+   Desktop (1280px+), Tablet (768px - 1279px), Mobile (<768px)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   TABLET & INTERMEDIATE BREAKPOINTS (max-width: 1024px)
+   -------------------------------------------------------------------------- */
+@media screen and (max-width: 1024px) {
+  .hero-coords-left,
+  .hero-coords-right {
+    position: static;
+    margin-bottom: 0.5rem;
+  }
+
+  .vector-matrix-wrapper {
+    min-height: auto;
+    margin-top: 2rem;
+  }
+
+  .vector-matrix-box {
+    max-width: 360px;
+  }
+
+  .about-right-col {
+    padding-left: 0;
+    margin-top: 2rem;
+  }
+
+  .project-card-body {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   TABLET & MOBILE REFALLS (max-width: 768px)
+   -------------------------------------------------------------------------- */
+@media screen and (max-width: 768px) {
+  .section-inner {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .section-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .hero-narrative {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .hero-meta-panel {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .vector-matrix-box {
+    max-width: 100%;
+  }
+
+  .metrics-bar {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .metric-number {
+    font-size: 1.75rem;
+  }
+
+  .project-actions-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-primary-action,
+  .btn-secondary-action {
+    justify-content: center;
+  }
+
+  .footer-inner {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.25rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   SMALL MOBILE SCREENS (max-width: 480px)
+   -------------------------------------------------------------------------- */
+@media screen and (max-width: 480px) {
+  .hero-meta-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-title-wrap h1 {
+    font-size: 2.5rem;
+  }
+
+  .vector-matrix-caption {
+    position: static;
+    margin-top: 1rem;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .terminal-card {
+    padding: 1.25rem;
+  }
+}
