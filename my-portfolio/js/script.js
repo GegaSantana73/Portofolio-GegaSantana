@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initContactForm();
   initSortVisualizer();
   initStudyTracker();
+  initArchivalPortrait();
+  initRadarVisualization();
+  initScrollReveal();
 });
 
 /* ----------------------------------------------------------------------------
@@ -113,40 +116,53 @@ function initNavigation() {
 }
 
 /* ----------------------------------------------------------------------------
-   3. Copy Email Interaction
+   3. Copy Email & Phone Interaction
    ---------------------------------------------------------------------------- */
 function initCopyEmail() {
-  const copyBtn = document.getElementById('copy-email-btn');
-  if (!copyBtn) return;
+  function setupCopyBtn(btnId, textGetter) {
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
 
-  copyBtn.addEventListener('click', async () => {
-    const email = 'gega.santana@example.com';
-    try {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(email);
-      } else {
-        // Fallback for older browsers
-        const textarea = document.createElement('textarea');
-        textarea.value = email;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
+    btn.addEventListener('click', async () => {
+      const text = typeof textGetter === 'function' ? textGetter() : textGetter;
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const textarea = document.createElement('textarea');
+          textarea.value = text;
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+        }
+
+        const originalText = btn.innerText;
+        btn.innerText = 'COPIED [✓]';
+        btn.style.color = 'var(--color-primary)';
+        btn.style.borderColor = 'var(--color-primary)';
+
+        setTimeout(() => {
+          btn.innerText = originalText;
+          btn.style.color = '';
+          btn.style.borderColor = '';
+        }, 2500);
+      } catch (err) {
+        console.warn('Failed to copy to clipboard', err);
       }
+    });
+  }
 
-      const originalText = copyBtn.innerText;
-      copyBtn.innerText = 'COPIED [✓]';
-      copyBtn.style.color = 'var(--color-primary)';
-      copyBtn.style.borderColor = 'var(--color-primary)';
+  // Copy Email Button
+  setupCopyBtn('copy-email-btn', () => {
+    const mailLink = document.querySelector('a[href^="mailto:"]');
+    return mailLink ? mailLink.getAttribute('href').replace('mailto:', '').trim() : 'gegasantana73@gmail.com';
+  });
 
-      setTimeout(() => {
-        copyBtn.innerText = originalText;
-        copyBtn.style.color = '';
-        copyBtn.style.borderColor = '';
-      }, 2500);
-    } catch (err) {
-      console.warn('Failed to copy to clipboard', err);
-    }
+  // Copy Phone Button
+  setupCopyBtn('copy-phone-btn', () => {
+    const phoneLink = document.getElementById('phone-link');
+    return phoneLink ? phoneLink.textContent.replace('↗', '').trim() : '+62 812-3456-7890';
   });
 }
 
@@ -320,3 +336,164 @@ function initStudyTracker() {
 
   updateProgress();
 }
+
+/* ----------------------------------------------------------------------------
+   7. Archival Portrait Specimen & Instant Visual Preview Workflow
+   ---------------------------------------------------------------------------- */
+function initArchivalPortrait() {
+  const photo = document.getElementById('portrait-photo');
+  const fallback = document.getElementById('portrait-fallback');
+  const filePicker = document.getElementById('portrait-file-picker');
+  const resetBtn = document.getElementById('portrait-reset-btn');
+
+  if (!photo || !fallback) return;
+
+  // Check if a persistent user-uploaded preview avatar is saved in localStorage
+  const savedAvatar = localStorage.getItem('gega_portfolio_custom_avatar');
+  if (savedAvatar) {
+    photo.src = savedAvatar;
+    if (resetBtn) resetBtn.style.display = 'inline-flex';
+  }
+
+  // Handle successful image load
+  photo.addEventListener('load', () => {
+    photo.classList.remove('is-hidden');
+    fallback.classList.add('is-hidden');
+  });
+
+  // Handle image error / 404 (falls back gracefully to architectural silhouette)
+  photo.addEventListener('error', () => {
+    photo.classList.add('is-hidden');
+    fallback.classList.remove('is-hidden');
+  });
+
+  // Instant visual file picker workflow (Zero-backend, instant browser preview & persistent)
+  if (filePicker) {
+    filePicker.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const dataUrl = event.target.result;
+        photo.src = dataUrl;
+        photo.classList.remove('is-hidden');
+        fallback.classList.add('is-hidden');
+        try {
+          localStorage.setItem('gega_portfolio_custom_avatar', dataUrl);
+        } catch (err) {
+          console.warn('LocalStorage quota exceeded or unavailable:', err);
+        }
+        if (resetBtn) resetBtn.style.display = 'inline-flex';
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // Reset to default photo path
+  if (resetBtn) {
+    resetBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      try {
+        localStorage.removeItem('gega_portfolio_custom_avatar');
+      } catch (err) {
+        console.warn('LocalStorage unavailable:', err);
+      }
+      photo.src = 'assets/images/gega-profile.jpg';
+      resetBtn.style.display = 'none';
+      if (filePicker) filePicker.value = '';
+    });
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   8. Live Interactive Radar Visualization Centerpiece
+   ---------------------------------------------------------------------------- */
+function initRadarVisualization() {
+  const telemetryText = document.getElementById('radar-telemetry-text');
+  const box = document.getElementById('vector-matrix-box');
+  const wrapper = document.getElementById('vector-matrix-wrapper');
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  // 1. Subtle 3D Perspective Tilt on Hover
+  if (wrapper && box && !prefersReduced.matches) {
+    let targetTiltX = 0;
+    let targetTiltY = 0;
+    let currentTiltX = 0;
+    let currentTiltY = 0;
+    let isHovering = false;
+
+    wrapper.addEventListener('mousemove', (e) => {
+      isHovering = true;
+      const rect = box.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const nx = (x / rect.width - 0.5) * 2;
+      const ny = (y / rect.height - 0.5) * 2;
+      targetTiltX = -ny * 6;
+      targetTiltY = nx * 6;
+    });
+
+    wrapper.addEventListener('mouseleave', () => {
+      isHovering = false;
+      targetTiltX = 0;
+      targetTiltY = 0;
+    });
+
+    function tiltLoop() {
+      if (isHovering || Math.abs(currentTiltX) > 0.05 || Math.abs(currentTiltY) > 0.05) {
+        currentTiltX += (targetTiltX - currentTiltX) * 0.1;
+        currentTiltY += (targetTiltY - currentTiltY) * 0.1;
+        box.style.transform = `perspective(1000px) rotateX(${currentTiltX.toFixed(2)}deg) rotateY(${currentTiltY.toFixed(2)}deg)`;
+      } else {
+        box.style.transform = '';
+      }
+      requestAnimationFrame(tiltLoop);
+    }
+    requestAnimationFrame(tiltLoop);
+  }
+
+  // 2. Continuous Real-time Radar Telemetry Sweep Readout (4.0s period)
+  if (telemetryText) {
+    const startTime = performance.now();
+    const SWEEP_PERIOD_MS = 4000;
+
+    function updateTelemetry(now) {
+      const elapsed = (now - startTime) % SWEEP_PERIOD_MS;
+      const deg = Math.floor((elapsed / SWEEP_PERIOD_MS) * 360);
+      const degStr = String(deg).padStart(3, '0');
+      telemetryText.textContent = `SWEEP: ${degStr}° // RADAR: ACTIVE SURVEILLANCE // TARGETS: 04`;
+      requestAnimationFrame(updateTelemetry);
+    }
+    requestAnimationFrame(updateTelemetry);
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   9. Scroll Reveal Animations (IntersectionObserver)
+   ---------------------------------------------------------------------------- */
+function initScrollReveal() {
+  const elements = document.querySelectorAll('.reveal-on-scroll');
+  if (!elements.length) return;
+
+  if (!('IntersectionObserver' in window)) {
+    elements.forEach(el => el.classList.add('is-revealed'));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    root: null,
+    rootMargin: '0px 0px -40px 0px',
+    threshold: 0.1
+  });
+
+  elements.forEach(el => observer.observe(el));
+}
+

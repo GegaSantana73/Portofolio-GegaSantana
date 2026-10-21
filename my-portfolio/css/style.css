@@ -720,6 +720,219 @@ button, input, textarea, select {
   margin-bottom: 1.5rem;
 }
 
+/* Hero Identity & Portrait Specimen */
+.hero-bio-lockup {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1.75rem;
+  margin-bottom: 2.75rem;
+}
+
+.hero-bio-narrative {
+  flex: 1;
+  min-width: 0;
+}
+
+.hero-bio-narrative .hero-subhead {
+  margin-bottom: 0.85rem;
+}
+
+.hero-bio-narrative .hero-narrative {
+  margin-bottom: 0;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+
+/* Archival Portrait Specimen Module */
+.archival-portrait-module {
+  position: relative;
+  width: 128px;
+  flex-shrink: 0;
+}
+
+.portrait-viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1.25;
+  background-color: var(--color-surface-lowest);
+  border: 1px solid var(--color-stroke);
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.portrait-viewport:hover {
+  border-color: rgba(208, 188, 255, 0.5);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55), 0 0 20px rgba(181, 107, 255, 0.18);
+}
+
+.portrait-bracket {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1;
+  color: var(--color-outline-variant);
+  pointer-events: none;
+  z-index: 4;
+}
+
+.portrait-bracket.p-tl { top: 0.25rem; left: 0.25rem; }
+.portrait-bracket.p-tr { top: 0.25rem; right: 0.25rem; }
+.portrait-bracket.p-bl { bottom: 0.25rem; left: 0.25rem; }
+.portrait-bracket.p-br { bottom: 0.25rem; right: 0.25rem; color: var(--color-primary); }
+
+.portrait-scanline-beam {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background: linear-gradient(to bottom, transparent 0%, rgba(181, 107, 255, 0.12) 50%, transparent 100%);
+  background-size: 100% 25%;
+  background-repeat: no-repeat;
+  animation: portraitScanline 4s linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes portraitScanline {
+  0% { background-position: 0 -25%; }
+  100% { background-position: 0 125%; }
+}
+
+.portrait-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  filter: contrast(1.05) brightness(0.95);
+  transition: filter var(--transition-normal), transform var(--transition-normal);
+}
+
+.portrait-viewport:hover .portrait-photo {
+  filter: contrast(1.1) brightness(1.02);
+  transform: scale(1.03);
+}
+
+.portrait-photo.is-hidden {
+  display: none;
+}
+
+/* Fallback Architecture when image is awaiting */
+.portrait-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-surface-lowest);
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+  z-index: 2;
+}
+
+.portrait-fallback.is-hidden {
+  display: none;
+}
+
+.fallback-graphic {
+  width: 44px;
+  height: 54px;
+  color: var(--color-outline-variant);
+  margin-bottom: 0.5rem;
+}
+
+.fallback-biometric-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.fallback-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-family: var(--font-mono);
+}
+
+.fallback-badge {
+  font-size: 0.5625rem;
+  color: var(--color-primary);
+  letter-spacing: 0.12em;
+  font-weight: 600;
+}
+
+.fallback-path {
+  font-size: 0.5rem;
+  color: var(--color-outline);
+  letter-spacing: 0.04em;
+}
+
+.fallback-status {
+  font-size: 0.5rem;
+  color: var(--color-tertiary);
+  letter-spacing: 0.12em;
+  margin-top: 0.25rem;
+}
+
+/* Quick Visual Photo Replacement Tools */
+.portrait-quick-tools {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.35rem;
+  display: flex;
+  gap: 0.25rem;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.portrait-viewport:hover .portrait-quick-tools {
+  opacity: 1;
+}
+
+.portrait-tool-btn {
+  width: 1.625rem;
+  height: 1.625rem;
+  background: rgba(20, 19, 23, 0.92);
+  border: 1px solid var(--color-stroke);
+  color: var(--color-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.portrait-tool-btn:hover {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  border-color: var(--color-primary);
+}
+
+.portrait-meta-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  color: var(--color-outline);
+  letter-spacing: 0.08em;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
 .hero-narrative {
   color: var(--color-on-surface-variant);
   font-family: var(--font-body);
@@ -762,13 +975,14 @@ button, input, textarea, select {
   display: block;
 }
 
-/* Vector Matrix (Hero Right) */
+/* Vector Matrix & Interactive Radar Centerpiece (Hero Right) */
 .vector-matrix-wrapper {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 380px;
+  perspective: 1200px;
 }
 
 @media (min-width: 1024px) {
@@ -780,15 +994,36 @@ button, input, textarea, select {
 .vector-matrix-box {
   position: relative;
   width: 100%;
-  max-width: 420px;
+  max-width: 440px;
   aspect-ratio: 1 / 1;
   padding: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(15, 13, 18, 0.85);
+  background-color: rgba(15, 13, 18, 0.9);
   border: 1px solid var(--color-stroke);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.55), 0 0 20px rgba(181, 107, 255, 0.06);
+  transform-style: preserve-3d;
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
+  cursor: crosshair;
+  user-select: none;
+  animation: radarEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+@keyframes radarEntrance {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.vector-matrix-box:hover {
+  border-color: rgba(208, 188, 255, 0.45);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.65), 0 0 32px rgba(181, 107, 255, 0.15);
 }
 
 .vector-bracket-tl {
@@ -798,6 +1033,7 @@ button, input, textarea, select {
   color: var(--color-outline-variant);
   font-family: var(--font-mono);
   font-size: 0.6875rem;
+  z-index: 4;
 }
 
 .vector-bracket-tr {
@@ -807,6 +1043,7 @@ button, input, textarea, select {
   color: var(--color-outline-variant);
   font-family: var(--font-mono);
   font-size: 0.6875rem;
+  z-index: 4;
 }
 
 .vector-bracket-bl {
@@ -816,6 +1053,7 @@ button, input, textarea, select {
   color: var(--color-outline-variant);
   font-family: var(--font-mono);
   font-size: 0.6875rem;
+  z-index: 4;
 }
 
 .vector-bracket-br {
@@ -825,13 +1063,108 @@ button, input, textarea, select {
   color: var(--color-primary);
   font-family: var(--font-mono);
   font-size: 0.6875rem;
+  z-index: 4;
 }
 
 .vector-matrix-svg {
+  position: relative;
   width: 100%;
   height: 100%;
   color: var(--color-outline-variant);
+  z-index: 1;
+  pointer-events: none;
 }
+
+/* Rotating Azimuth Calibration Ring */
+.radar-azimuth-ring {
+  transform-origin: 200px 200px;
+  animation: radarSpinCW 60s linear infinite;
+}
+
+@keyframes radarSpinCW {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================================================
+   SURVEILLANCE RADAR SWEEP & PHOSPHOR PERSISTENCE ANIMATION
+   Continuous, synchronized 360-degree rotation (Exact 4.0s period)
+   ============================================================================ */
+.radar-sweep-assembly {
+  transform-box: view-box;
+  transform-origin: 200px 200px;
+  animation: radarSweepRotate 4s linear infinite;
+  pointer-events: none;
+  will-change: transform;
+}
+
+@keyframes radarSweepRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Target Phosphor Glow Flash on Sweep Contact */
+@keyframes blipPhosphorGlow {
+  0% {
+    fill: #ffffff;
+    filter: drop-shadow(0 0 4px #ffffff) drop-shadow(0 0 10px #b56bff);
+    opacity: 1;
+  }
+  12% {
+    fill: #d0bcff;
+    filter: drop-shadow(0 0 3px #b56bff);
+    opacity: 0.92;
+  }
+  35% {
+    fill: #b66dff;
+    filter: none;
+    opacity: 0.55;
+  }
+  100% {
+    fill: #b66dff;
+    filter: none;
+    opacity: 0.45;
+  }
+}
+
+/* Target Radar Echo Ring Expansion */
+@keyframes blipEchoExpand {
+  0% {
+    r: 3px;
+    opacity: 0.95;
+    stroke: #ffffff;
+    stroke-width: 1.25px;
+  }
+  28% {
+    r: 10px;
+    opacity: 0.55;
+    stroke: #d0bcff;
+    stroke-width: 1px;
+  }
+  60%, 100% {
+    r: 18px;
+    opacity: 0;
+    stroke: #b56bff;
+    stroke-width: 0.5px;
+  }
+}
+
+/* Synchronized Delays for 4-Second Rotation (0° East: 0s, 90° South: 1s, 180° West: 2s, 270° North: 3s) */
+.blip-target-e { animation: blipPhosphorGlow 4s linear infinite 0s; }
+.blip-echo-e   { animation: blipEchoExpand   4s linear infinite 0s; }
+
+.blip-target-s { animation: blipPhosphorGlow 4s linear infinite 1s; }
+.blip-echo-s   { animation: blipEchoExpand   4s linear infinite 1s; }
+
+.blip-target-w { animation: blipPhosphorGlow 4s linear infinite 2s; }
+.blip-echo-w   { animation: blipEchoExpand   4s linear infinite 2s; }
+
+.blip-target-n { animation: blipPhosphorGlow 4s linear infinite 3s; }
+.blip-echo-n   { animation: blipEchoExpand   4s linear infinite 3s; }
 
 .vector-matrix-caption {
   position: absolute;
@@ -839,17 +1172,25 @@ button, input, textarea, select {
   left: -1rem;
   background-color: var(--color-surface-container);
   border: 1px solid var(--color-stroke);
-  padding: 0.5rem 0.75rem;
+  padding: 0.5rem 0.85rem;
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  z-index: 5;
+  transition: border-color var(--transition-fast);
+}
+
+.vector-matrix-box:hover .vector-matrix-caption {
+  border-color: rgba(208, 188, 255, 0.4);
 }
 
 .vector-matrix-caption-dot {
   width: 0.5rem;
   height: 0.5rem;
   background-color: var(--color-primary);
+  box-shadow: 0 0 6px rgba(181, 107, 255, 0.6);
+  flex-shrink: 0;
 }
 
 /* --------------------------------------------------------------------------
@@ -1528,3 +1869,77 @@ button, input, textarea, select {
     flex-direction: row;
   }
 }
+
+/* --------------------------------------------------------------------------
+   12. MODERN PORTFOLIO POLISH: SCROLL REVEALS & MICRO-INTERACTIONS
+   -------------------------------------------------------------------------- */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered delay helpers for grid items */
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* Enhanced hover depth for interactive cards */
+.project-card,
+.sandbox-card,
+.callout-block,
+.academic-specs-card,
+.toolkit-category-card,
+.channel-card,
+.terminal-card {
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal), transform var(--transition-normal);
+}
+
+.project-card:hover,
+.sandbox-card:hover {
+  border-color: rgba(208, 188, 255, 0.45);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 24px rgba(181, 107, 255, 0.08);
+}
+
+.channel-card:hover {
+  border-color: rgba(208, 188, 255, 0.4);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45), 0 0 16px rgba(181, 107, 255, 0.06);
+  transform: translateY(-2px);
+}
+
+.toolkit-category-card:hover {
+  border-color: rgba(208, 188, 255, 0.35);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5), 0 0 18px rgba(181, 107, 255, 0.06);
+}
+
+/* Accessibility: Support Reduced Motion (Preserves functional ambient radar graphics) */
+@media (prefers-reduced-motion: reduce) {
+  *:not(.vector-matrix-svg):not(.radar-sweep-assembly):not(.radar-sweep-assembly *):not(.radar-blip-target):not(.radar-blip-echo):not(.radar-azimuth-ring):not(.radar-azimuth-ring *),
+  *:not(.vector-matrix-svg):not(.radar-sweep-assembly):not(.radar-sweep-assembly *):not(.radar-blip-target):not(.radar-blip-echo):not(.radar-azimuth-ring):not(.radar-azimuth-ring *)::before,
+  *:not(.vector-matrix-svg):not(.radar-sweep-assembly):not(.radar-sweep-assembly *):not(.radar-blip-target):not(.radar-blip-echo):not(.radar-azimuth-ring):not(.radar-azimuth-ring *)::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .portrait-scanline-beam,
+  .status-ping-pulse {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
