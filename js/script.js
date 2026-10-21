@@ -367,6 +367,17 @@ function initArchivalPortrait() {
     fallback.classList.remove('is-hidden');
   });
 
+  // Handle already cached or failed image
+  if (photo.complete) {
+    if (photo.naturalWidth === 0) {
+      photo.classList.add('is-hidden');
+      fallback.classList.remove('is-hidden');
+    } else {
+      photo.classList.remove('is-hidden');
+      fallback.classList.add('is-hidden');
+    }
+  }
+
   // Instant visual file picker workflow (Zero-backend, instant browser preview & persistent)
   if (filePicker) {
     filePicker.addEventListener('change', (e) => {

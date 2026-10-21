@@ -169,7 +169,8 @@
 
                   <!-- The Real Image (Default path: assets/images/gega-profile.jpg) -->
                   <img src="assets/images/gega-profile.jpg" alt="Gega Santana — Portrait Specimen"
-                    class="portrait-photo" id="portrait-photo" loading="eager">
+                    class="portrait-photo" id="portrait-photo" loading="eager"
+                    onerror="this.classList.add('is-hidden'); document.getElementById('portrait-fallback')?.classList.remove('is-hidden');">
 
                   <!-- Graceful Architectural Fallback -->
                   <div class="portrait-fallback" id="portrait-fallback">
